@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Input Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: calc(100% - 30px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group .icon {
+            margin-right: 10px;
+        }
+
+        .form-group .icon i {
+            color: #777;
+        }
+
+        .form-group input[type="file"] {
+            display: none;
+        }
+
+        .form-group .custom-file-upload {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #imagePreview {
+            margin-bottom: 20px;
+            text-align: center; /* Center the image */
+        }
+
+        #imagePreview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 5px;
+        }
+
+        /* Remove default anchor styling */
+        #imagePreview a {
+            text-decoration: none;
+            background-color: transparent;
+            border: none;
+        }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Your Image</h1>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="image"><span class="icon"><i class="fas fa-image"></i></span>Your Image:</label>
+                <input type="file" id="imageInput" accept="image/*">
+                <label for="imageInput" class="custom-file-upload">Choose File</label>
+            </div>
+
+            <div id="imagePreview">
+                <a href="destination_page.html"><img src="image_placeholder.jpg" alt="Image Placeholder"></a>
+            </div>
+
+            <div class="form-group">
+                <label for="name1"><span class="icon"><i class="fas fa-user"></i></span>Your Name:</label>
+                <input type="text" id="name1" name="name1" placeholder="Name1">
+            </div>
+
+            <div class="form-group">
+                <label for="name2"><span class="icon"><i class="fas fa-user"></i></span>Your Surname:</label>
+                <input type="text" id="name2" name="name2" placeholder="Name2">
+            </div>
+
+            <div class="form-group">
+                <label for="age"><span class="icon"><i class="fas fa-calendar-alt"></i></span>Your Age:</label>
+                <input type="number" id="age" name="age" placeholder="Age">
+            </div>
+
+            <input type="submit" class="submit-btn" value="Upload">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var fileInput = document.getElementById('imageInput');
+            var file = fileInput.files[0];
+            var name1 = document.getElementById('name1').value;
+            var name2 = document.getElementById('name2').value;
+            var age = document.getElementById('age').value;
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var imageUrl = event.target.result;
+                    window.location.href = 'display.html?image=' + encodeURIComponent(imageUrl) +
+                        '&name1=' + encodeURIComponent(name1) +
+                        '&name2=' + encodeURIComponent(name2) +
+                        '&age=' + encodeURIComponent(age);
+
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Function to preview the selected image
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var imageUrl = event.target.result;
+                    var imagePreview = document.getElementById('imagePreview');
+                    imagePreview.innerHTML = '<a href="destination_page.html"><img src="' + imageUrl + '" style="max-width: 200px; max-height: 200px; border-radius: 5px;"></a>';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
